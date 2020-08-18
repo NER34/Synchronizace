@@ -101,3 +101,8 @@ Po každém updatu se volá funkkce `load()`
  },
  
 Musíte být opatrný při volání funkce `SAGE2Sync()` uvnítř `load()`, protože to muže přivest k nekonečnemu ciklu updatů.
+
+==== Zdrojový kod:
+link:https://github.com/NER34/Synchronizace/tree/master/running_square[running_square]
+
+link:https://github.com/NER34/Synchronizace/tree/master/running_square_with_sync[running_square_with_sync]
