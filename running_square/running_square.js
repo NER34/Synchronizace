@@ -32,7 +32,7 @@
     },
     
     nextVector: function (dt) {
-        //Vypocitame novу souradnice ctverce
+        //Vypocitame nove souradnice ctverce. dt je deltaTime
         let new_x = this.coordinates[0] + this.vector[0] * dt * this.speed * 5;
         let new_y = this.coordinates[1] + this.vector[1] * dt * this.speed * 5;
         // Pokud se ctverec srazí se stěnou, zmeni smer pohybu, jinak ukladame nove souradnice
