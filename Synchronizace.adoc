@@ -1,0 +1,103 @@
+=== Synchronizace aplikací mezi display klienty
+
+Rozebereme synchronizaci na příkladu aplikací, kterou nazveme `runnung_square` (běžící čtverec). Barevný čtverec se hýbá uvnitř okna. Pokud se čtverec srazí se stěnou, náhodně změní svůj směr pohybu a barvu. Vytvoříme složku `running_square` a soubory `running_square.js` a `instructions.json`.
+
+==== instructions.json
+
+[source,json]
+ {
+  "main_script": "running_square.js",
+  "width": 400,
+  "height": 400,
+  "animation": true,
+  "title": "Running Square"
+ }
+ 
+==== running_square.js
+
+[source,javascript]
+ var running_square = SAGE2_App.extend({
+    init: function (data) {},
+    draw: function (date) {},
+    drawSquare: function () {},
+    nextVector: function (dt) {}
+ });
+ 
+Funkce `init(data)` inicializuje okno a proměny.
+
+[source,javascript]
+ init: function (data) {
+        this.SAGE2Init("canvas", data);
+        this.ctx = this.element.getContext("2d");
+        this.coordinates = [0, 0];
+        this.vector = [-1, 0];
+        this.speed = 25;
+        this.squareSize = 50;
+        this.color = "blue";
+        this.colors = ["red", "green", "blue"];
+ },
+ 
+`draw(date)` volá funkce, které se zabývají kreslením a pohybem čtvrce.
+
+[source,javascript]
+ draw: function (date) {
+     this.ctx.fillStyle = "white";
+     this.ctx.fillRect(0, 0, this.element.width, this.element.height);
+     this.drawSquare();
+     this.nextVector(this.dt);
+ },
+
+Kreslením čtverce se zabývá funkce `drawSquare()`.
+
+[source,javascript]
+ drawSquare: function () {
+     this.ctx.fillStyle = this.color;
+     this.ctx.fillRect(this.coordinates[0],
+         this.coordinates[1],
+         this.squareSize,
+         this.squareSize);
+ },
+ 
+Funkce `nextVector(dt)` vypočítá souřadnice čtverce. Pokud zjistí, že se srazil se stěnou, vypočté nový směr a vyberé novou barvu.
+
+[source,javascript]
+ nextVector: function (dt) {
+     this.window.crypto.getRandomValues();
+     let new_x = this.coordinates[0] + this.vector[0] * dt * this.speed * 5;
+     let new_y = this.coordinates[1] + this.vector[1] * dt * this.speed * 5;
+     if (new_x + this.squareSize > this.element.width ||
+         new_y + this.squareSize > this.element.width ||
+         new_x < 0 || new_y < 0) {
+         x = Math.random() * 2 * Math.PI;       
+         this.vector[0] = Math.cos(x);
+         this.vector[1] = Math.sin(x);
+         this.color = this.colors[Math.round(Math.random() * this.colors.length)];
+     }
+     else {
+         this.coordinates[0] = new_x;
+         this.coordinates[1] = new_y;
+     }
+ }
+ 
+Pokud spustíte takový program, zjistité, že není synchronizován mezi display klienty. Pro synchronizaci potřebujeme program trochu přepsát. Za prvé přídáme do souboru `instructions.json` parametr `load`.
+
+[source,json]
+ "load": {
+   "coordinates": [ 0, 0 ],
+   "color": "red"
+ },
+
+Do `load` předáme objekt ze všemi parametry, které budé server synchronizovat. K takovým parametrům můžete v js souboru mít přístup přes objekt `state` (Např. `this.state.color`). Z toho důvodu už nemusíme je inicializovat ve funkci `init(data)`.
+
+Teď už mate aplikaci synchronizovanou. Mezi display klienty jeden budé Master klientem, což znamená, že tenhle klient budé generovat a odesílat parametry ostatním klientům. Zjistit, který klient je Master můžete pooci funkce `this.isMaster()`. Tato funkce vrací `true` když volána Master klientem.
+
+Update parametrů probíhá automaticky bez ohledu na to, jestli byly synchronizované parametry změněny. Pokud ale bude potřeba volát update ručně musíte použit funkce `this.SAGE2Sync()`. Příjimá jako parametr `true` nebo `false`. V obou připadech parametry budou aktualizované na display klientech serveru. Pokud ale nějaký jiný web používá naše aplikace a chceme aktualizovat parametry, musíme vybrat `true`.
+
+Po každém updatu se volá funkkce `load()`
+
+[source,javascript]
+ load: function () {
+     // neco
+ },
+ 
+Musíte být opatrný při volání funkce `SAGE2Sync()` uvnítř `load()`, protože to muže přivest k nekonečnemu ciklu updatů.

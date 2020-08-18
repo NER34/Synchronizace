@@ -1,0 +1,7 @@
+{
+  "main_script": "running_square.js",
+  "width": 400,
+  "height": 400,
+  "animation": true,
+  "title": "Running Square"
+}

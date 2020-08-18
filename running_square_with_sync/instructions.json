@@ -1,0 +1,11 @@
+{
+  "main_script": "running_square_with_sync.js",
+  "width": 400,
+  "height": 400,
+  "animation": true,
+  "load": {
+    "coordinates": [ 0, 0 ],
+    "color": "red"
+  },
+  "title": "Running Square"
+}
