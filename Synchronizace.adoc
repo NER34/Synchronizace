@@ -78,7 +78,7 @@ Funkce `nextVector(dt)` vypočítá souřadnice čtverce. Pokud zjistí, že se 
             x = Math.random() * 2 * Math.PI;
             this.vector[0] = Math.cos(x);
             this.vector[1] = Math.sin(x);
-            // Ukladame ovu barvu
+            // Ukladame novou barvu
             this.color = this.colors[Math.round(Math.random() * this.colors.length)];
         }
         else {
