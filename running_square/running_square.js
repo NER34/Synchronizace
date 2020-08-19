@@ -7,7 +7,7 @@
         this.ctx = this.element.getContext("2d");
         this.coordinates = [0, 0];
         this.vector = [-1, 0];
-        this.speed = 25;
+        this.speed = 125;
         this.squareSize = 50;
         this.color = "blue";
         this.colors = ["red", "green", "blue"];
@@ -33,8 +33,8 @@
 
     nextPoint: function (dt) {
         //Vypocitame novу souradnice ctverce
-        let new_x = this.coordinates[0] + this.vector[0] * dt * this.speed * 5;
-        let new_y = this.coordinates[1] + this.vector[1] * dt * this.speed * 5;
+        let new_x = this.coordinates[0] + this.vector[0] * dt * this.speed;
+        let new_y = this.coordinates[1] + this.vector[1] * dt * this.speed;
         // Pokud se ctverec srazí se stěnou, zmeni smer pohybu, jinak ukladame nove souradnice
         if (new_x + this.squareSize > this.element.width ||
             new_y + this.squareSize > this.element.width ||
