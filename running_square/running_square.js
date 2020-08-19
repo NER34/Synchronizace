@@ -20,7 +20,7 @@
         // Kreslime ctverec
         this.drawSquare();
         // Posouvame ctverec nebo menime smer pohybu
-        this.nextVector(this.dt);
+        this.nextPoint(this.dt);
     },
 
     drawSquare: function () {
@@ -30,27 +30,32 @@
             this.squareSize,
             this.squareSize);
     },
-    
-    nextVector: function (dt) {
-        //Vypocitame nove souradnice ctverce. dt je deltaTime
+
+    nextPoint: function (dt) {
+        //Vypocitame novу souradnice ctverce
         let new_x = this.coordinates[0] + this.vector[0] * dt * this.speed * 5;
         let new_y = this.coordinates[1] + this.vector[1] * dt * this.speed * 5;
         // Pokud se ctverec srazí se stěnou, zmeni smer pohybu, jinak ukladame nove souradnice
         if (new_x + this.squareSize > this.element.width ||
             new_y + this.squareSize > this.element.width ||
             new_x < 0 || new_y < 0) {
-            // Vypocitame novy smer
-            x = Math.random() * 2 * Math.PI;
-            
-            this.vector[0] = Math.cos(x);
-            this.vector[1] = Math.sin(x);
-            // Ukladame ovu barvu
-            this.color = this.colors[Math.round(Math.random() * this.colors.length)];
+
+            this.newVector();
         }
         else {
             // Ukladame nove souradnice
             this.coordinates[0] = new_x;
             this.coordinates[1] = new_y;
         }
+    },
+
+    newVector: function () {
+        // Vypocitame novy smer
+        x = Math.random() * 2 * Math.PI;
+
+        this.vector[0] = Math.cos(x);
+        this.vector[1] = Math.sin(x);
+        // Ukladame ovu barvu
+        this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
     }
 });

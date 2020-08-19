@@ -18,7 +18,7 @@
         // Kreslime ctverec
         this.drawSquare();
         // Posouvame ctverec nebo menime smer pohybu
-        this.nextVector(this.dt);
+        this.nextPoint(this.dt);
     },
     // Funkce se automaticky vola po aktualizaci parametru
     load: function () {
@@ -32,8 +32,8 @@
             this.squareSize,
             this.squareSize);
     },
-    
-    nextVector: function (dt) {
+
+    nextPoint: function (dt) {
         //Vypocitame novу souradnice ctverce
         let new_x = this.state.coordinates[0] + this.vector[0] * dt * this.speed * 5;
         let new_y = this.state.coordinates[1] + this.vector[1] * dt * this.speed * 5;
@@ -41,15 +41,8 @@
         if (new_x + this.squareSize > this.element.width ||
             new_y + this.squareSize > this.element.width ||
             new_x < 0 || new_y < 0) {
-            // Vypocitame novy smer
-            x = Math.random() * 2 * Math.PI;
-            
-            this.vector[0] = Math.cos(x);
-            this.vector[1] = Math.sin(x);
-            // Ukladame ovu barvu
-            this.state.color = this.colors[Math.floor(Math.random() * this.colors.length)];
-            // Aktualizujeme synchronizovane parametry
-            this.SAGE2Sync(true);
+
+            this.newVector();
         }
         else {
             // Ukladame nove souradnice
@@ -57,5 +50,17 @@
             this.state.coordinates[1] = new_y;
             this.SAGE2Sync(true);
         }
+    },
+
+    newVector: function () {
+        // Vypocitame novy smer
+        x = Math.random() * 2 * Math.PI;
+
+        this.vector[0] = Math.cos(x);
+        this.vector[1] = Math.sin(x);
+        // Ukladame ovu barvu
+        this.state.color = this.colors[Math.floor(Math.random() * this.colors.length)];
+        // Aktualizujeme synchronizovane parametry
+        this.SAGE2Sync(true);
     }
 });
