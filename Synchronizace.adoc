@@ -17,10 +17,11 @@ Rozebereme synchronizaci na příkladu aplikací, kterou nazveme `runnung_square
 
 [source,javascript]
  var running_square = SAGE2_App.extend({
-    init: function (data) {},
-    draw: function (date) {},
-    drawSquare: function () {},
-    nextVector: function (dt) {}
+     init: function (data) {},
+     draw: function (date) {},
+     drawSquare: function () {},
+     nextPoint: function (dt) {},
+     newVector: function () {}
  });
  
 Funkce `init(data)` inicializuje okno a proměny.
@@ -49,7 +50,7 @@ Funkce `init(data)` inicializuje okno a proměny.
         // Kreslime ctverec
         this.drawSquare();
         // Posouvame ctverec nebo menime smer pohybu
-        this.nextVector(this.dt);
+        this.nextPoint(this.dt);
  },
 
 Kreslením čtverce se zabývá funkce `drawSquare()`.
@@ -63,29 +64,37 @@ Kreslením čtverce se zabývá funkce `drawSquare()`.
          this.squareSize);
  },
  
-Funkce `nextVector(dt)` vypočítá souřadnice čtverce. Pokud zjistí, že se srazil se stěnou, vypočté nový směr a vyberé novou barvu.
+Funkce `nextPoint(dt)` vypočítá souřadnice čtverce. 
 
 [source,javascript]
  nextVector: function (dt) {
-        //Vypocitame nove souradnice ctverce. dt je deltaTime
+        //Vypocitame novу souradnice ctverce
         let new_x = this.coordinates[0] + this.vector[0] * dt * this.speed * 5;
         let new_y = this.coordinates[1] + this.vector[1] * dt * this.speed * 5;
         // Pokud se ctverec srazí se stěnou, zmeni smer pohybu, jinak ukladame nove souradnice
         if (new_x + this.squareSize > this.element.width ||
             new_y + this.squareSize > this.element.width ||
             new_x < 0 || new_y < 0) {
-            // Vypocitame novy smer
-            x = Math.random() * 2 * Math.PI;
-            this.vector[0] = Math.cos(x);
-            this.vector[1] = Math.sin(x);
-            // Ukladame novou barvu
-            this.color = this.colors[Math.round(Math.random() * this.colors.length)];
+            // Vola funkkce pro vypocet noveho smeru pohybu
+            this.newVector();
         }
         else {
             // Ukladame nove souradnice
             this.coordinates[0] = new_x;
             this.coordinates[1] = new_y;
         }
+ }
+ 
+Pokud zjistí, že se srazil se stěnou, Zavolá funkce `newVector()`, která vypočté nový směr a vyberé novou barvu.
+
+[source,javascript]
+ newVector: function () {
+     // Vypocitame novy smer
+     x = Math.random() * 2 * Math.PI;
+     this.vector[0] = Math.cos(x);
+     this.vector[1] = Math.sin(x);
+     // Ukladame ovu barvu
+     this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
  }
  
 Pokud spustíte takový program, zjistité, že není synchronizován mezi display klienty. Pro synchronizaci potřebujeme program trochu přepsát. Za prvé přídáme do souboru `instructions.json` parametr `load`.
