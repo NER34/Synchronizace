@@ -5,11 +5,17 @@
         this.SAGE2Init("canvas", data);
         // Inicializujeme promeny
         this.ctx = this.element.getContext("2d");
+        // Souradnice ctverce [x, y]
         this.coordinates = [0, 0];
+        // Smer pohybu
         this.vector = [-1, 0];
+        // Rychlost pohybu
         this.speed = 125;
+        // Velikost strany čtverce
         this.squareSize = 50;
+        // Soucasna barva ctverce
         this.color = "blue";
+        // Vsechny mozne barvy ctverce
         this.colors = ["red", "green", "blue"];
     },
 
