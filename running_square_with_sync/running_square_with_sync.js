@@ -5,9 +5,13 @@
         this.SAGE2Init("canvas", data);
         // Inicializujeme promeny
         this.ctx = this.element.getContext("2d");
+        // Smer pohybu
         this.vector = [-1, 0];
-        this.speed = 25;
+        // Rychlost pohybu
+        this.speed = 125;
+        // Velikost strany čtverce
         this.squareSize = 50;
+        // Vsechny mozne barvy ctverce
         this.colors = ["red", "green", "blue"];
     },
 
@@ -35,8 +39,8 @@
 
     nextPoint: function (dt) {
         //Vypocitame novу souradnice ctverce
-        let new_x = this.state.coordinates[0] + this.vector[0] * dt * this.speed * 5;
-        let new_y = this.state.coordinates[1] + this.vector[1] * dt * this.speed * 5;
+        let new_x = this.state.coordinates[0] + this.vector[0] * dt * this.speed;
+        let new_y = this.state.coordinates[1] + this.vector[1] * dt * this.speed;
         // Pokud se ctverec srazí se stěnou, zmeni smer pohybu, jinak ukladame nove souradnice
         if (new_x + this.squareSize > this.element.width ||
             new_y + this.squareSize > this.element.width ||
