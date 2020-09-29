@@ -61,7 +61,7 @@
 
         this.vector[0] = Math.cos(x);
         this.vector[1] = Math.sin(x);
-        // Ukladame ovu barvu
+        // Ukladame novou barvu
         this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
     }
 });
