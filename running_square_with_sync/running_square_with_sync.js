@@ -62,7 +62,7 @@
 
         this.vector[0] = Math.cos(x);
         this.vector[1] = Math.sin(x);
-        // Ukladame ovu barvu
+        // Ukladame novou barvu
         this.state.color = this.colors[Math.floor(Math.random() * this.colors.length)];
         // Aktualizujeme synchronizovane parametry
         this.SAGE2Sync(true);
